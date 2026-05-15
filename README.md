@@ -1,144 +1,278 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android"/>
-  <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" alt="Kotlin"/>
-  <img src="https://img.shields.io/badge/Jetpack_Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white" alt="Jetpack Compose"/>
-  <img src="https://img.shields.io/badge/Material_3-757575?style=for-the-badge&logo=materialdesign&logoColor=white" alt="Material 3"/>
-</p>
+<div align="center">
 
-# 🏫 Namma Shaale — School Asset Manager
+<!-- ═══════════════════ HERO BANNER ═══════════════════ -->
 
-> **Namma Shaale** (ನಮ್ಮ ಶಾಲೆ — "Our School" in Kannada) is a modern Android application built for schools and educational institutions to **register, track, and manage physical assets** such as furniture, electronics, lab equipment, and more. It also features an integrated **issue tracking system** and **report generation** to streamline maintenance workflows.
+# 🏫 Namma Shaale
+
+### *ನಮ್ಮ ಶಾಲೆ — "Our School"*
+
+**A Modern Android Asset Management System for Schools & Institutions**
+
+[![Android](https://img.shields.io/badge/Platform-Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://developer.android.com)
+[![Kotlin](https://img.shields.io/badge/Language-Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)](https://kotlinlang.org)
+[![Jetpack Compose](https://img.shields.io/badge/UI-Jetpack_Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
+[![Material 3](https://img.shields.io/badge/Design-Material_3-757575?style=for-the-badge&logo=materialdesign&logoColor=white)](https://m3.material.io)
+
+[![API](https://img.shields.io/badge/Min_SDK-26_(Oreo)-green?style=flat-square)](https://developer.android.com/about/versions/oreo)
+[![Target](https://img.shields.io/badge/Target_SDK-35_(Android_15)-blue?style=flat-square)](https://developer.android.com/about/versions/15)
+[![Version](https://img.shields.io/badge/Version-1.0-orange?style=flat-square)]()
+[![License](https://img.shields.io/badge/License-Open_Source-brightgreen?style=flat-square)]()
+
+---
+
+*Register, track, and manage physical assets in schools — from furniture and electronics to lab equipment — with built-in issue tracking, camera capture, and shareable reports.*
+
+[📲 Features](#-features) · [🏗️ Architecture](#%EF%B8%8F-architecture) · [🚀 Getting Started](#-getting-started) · [📊 Database Schema](#-database-schema) · [🤝 Contributing](#-contributing)
+
+</div>
+
+---
+
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [App Screens](#-app-screens)
+- [Architecture](#%EF%B8%8F-architecture)
+- [Project Structure](#-project-structure)
+- [Tech Stack](#%EF%B8%8F-tech-stack)
+- [Getting Started](#-getting-started)
+- [Database Schema](#-database-schema)
+- [Design System](#-design-system)
+- [Version Catalog](#-version-catalog)
+- [Contributing](#-contributing)
+- [Team](#-team)
 
 ---
 
 ## ✨ Features
 
-| Feature | Description |
-|---|---|
-| 📊 **Dashboard** | Real-time overview with stat cards showing total, working, needs-repair, and broken asset counts. Animated entry with quick-action shortcuts. |
-| 📝 **Asset Registration** | Register new assets with name, serial number, category, condition, and an optional photo captured via the device camera. |
-| 📋 **Asset List & Search** | Browse all registered assets with live search by name or serial number and filter chips (All · Working · Needs Repair · Broken). |
-| 🔍 **Asset Detail View** | View full asset details including condition, timestamps, and linked issues. Update condition or delete assets with confirmation dialogs. |
-| 🐛 **Issue Tracking** | Log issues against any asset, view all issues with tabs (All · Open · Resolved), mark issues as resolved, or remove them. |
-| 📸 **Camera Integration** | Capture asset photos using CameraX with a full-screen viewfinder and circular shutter button. |
-| 📄 **Report Generation** | Auto-generated plain-text summary reports with asset overview, category breakdown, and recent unresolved issues — shareable via Android's share sheet. |
-| 🌗 **Dynamic Theming** | Supports Material You dynamic colors (Android 12+), plus custom light/dark themes with a Deep Teal & Warm Amber color palette. |
+<table>
+<tr>
+<td width="50%">
+
+### 📊 Smart Dashboard
+Real-time stat cards with **gradient backgrounds** and **slide-in animations** showing live counts of total, working, needs-repair, and broken assets. One-tap quick actions for instant navigation.
+
+### 📝 Asset Registration
+Complete registration form with **validated inputs**, dropdown selectors for 6 asset categories, condition picker, and integrated **camera capture** for asset photos.
+
+### 🔍 Search & Filter
+**Live search** across asset names and serial numbers with **Material 3 FilterChips** for instant condition-based filtering (All · Working · Needs Repair · Broken).
+
+### 📸 CameraX Integration
+Full-screen **CameraX viewfinder** with a styled circular shutter button. Captured photos are saved locally and linked to assets via URI.
+
+</td>
+<td width="50%">
+
+### 🐛 Issue Tracker
+Log maintenance issues against any asset. **Tabbed interface** (All · Open · Resolved) with color-coded cards, resolve/delete actions, and unresolved count badges.
+
+### 📄 Report Generator
+Auto-generated **plain-text summary reports** with asset overview, category breakdown, and recent unresolved issues — shareable via Android's native **share sheet**.
+
+### 🎨 Dynamic Theming
+Supports **Material You** dynamic colors on Android 12+ devices. Falls back to a handcrafted **Deep Teal & Warm Amber** palette with full dark mode support.
+
+### ⚡ Reactive Data
+**Kotlin Flow** + **Room** ensure the UI always reflects the latest data. Changes propagate automatically from SQLite → DAO → Repository → ViewModel → Compose.
+
+</td>
+</tr>
+</table>
+
+---
+
+## 📱 App Screens
+
+| # | Screen | Description |
+|:-:|--------|-------------|
+| 1 | **🏠 Dashboard** | Home screen with animated gradient stat cards (Total Assets, Working, Needs Repair, Broken) and quick-action buttons for asset list, issues, and reports. Uses `AnimatedVisibility` with `fadeIn` + `slideInVertically` transitions. |
+| 2 | **📝 Asset Registration** | Scrollable form with `OutlinedTextField` for name & serial number (with validation), `ExposedDropdownMenuBox` for category (Furniture, Electronics, Sports Equipment, Books, Lab Equipment, Others) and condition (Working, Needs Repair, Broken), plus a tap-to-capture photo card. |
+| 3 | **📋 Asset List** | `LazyColumn` of all registered assets with a search bar and `FilterChip` row. Each item displays a 2-letter avatar, asset name, serial number, category, and a color-coded condition badge. |
+| 4 | **🔍 Asset Detail** | Full asset info with header card, editable condition (dropdown), registration & update timestamps, and linked issues list. Includes asset deletion with confirmation dialog and a "Log Issue" floating action button. |
+| 5 | **📸 Camera** | Full-screen CameraX viewfinder (`PreviewView`) with a translucent circular capture button. Photo URI is passed back to registration via `SavedStateHandle`. |
+| 6 | **🐛 Issue List** | All issues across assets with `TabRow` filtering (All · Open · Resolved). Open issues shown in `errorContainer` colors, resolved in muted `surfaceVariant`. Resolve and delete actions on each card. |
+| 7 | **📄 Reports** | Auto-generated monospaced text report with asset summary, condition breakdown, category distribution, and up to 5 recent unresolved issues. Share button triggers `ACTION_SEND` intent. |
 
 ---
 
 ## 🏗️ Architecture
 
-The project follows **MVVM (Model–View–ViewModel)** architecture with a clean separation of concerns:
+The app follows **MVVM (Model–View–ViewModel)** with the **Repository Pattern**, ensuring clean separation of concerns and testability.
 
 ```
-UI (Jetpack Compose)  →  ViewModel  →  Repository  →  DAO  →  Room (SQLite)
-        ↑                                                          |
-        └──────────── Flow auto-updates ←──────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                        PRESENTATION LAYER                       │
+│  ┌─────────────┐    ┌──────────────┐    ┌───────────────────┐   │
+│  │   Compose    │◄──│  ViewModel   │◄──►│    Navigation     │   │
+│  │   Screens    │    │ (StateFlow)  │    │    (NavGraph)     │   │
+│  └──────┬───────┘    └──────┬───────┘    └───────────────────┘   │
+│         │                   │                                    │
+│         │  observes         │  calls                             │
+│         ▼                   ▼                                    │
+├─────────────────────────────────────────────────────────────────┤
+│                          DATA LAYER                             │
+│         ┌───────────────────────────────┐                       │
+│         │         Repository            │  ◄─ Single Source     │
+│         │    (AssetRepository.kt)       │     of Truth          │
+│         └──────────┬────────────────────┘                       │
+│                    │                                             │
+│         ┌─────────┴─────────┐                                   │
+│         ▼                   ▼                                   │
+│  ┌─────────────┐    ┌─────────────┐                             │
+│  │  AssetDao   │    │  IssueDao   │   ◄─ Data Access Objects   │
+│  └──────┬──────┘    └──────┬──────┘                             │
+│         │                  │                                     │
+│         └────────┬─────────┘                                     │
+│                  ▼                                               │
+│         ┌─────────────────┐                                     │
+│         │   AppDatabase   │   ◄─ Room (SQLite)                  │
+│         │  (Singleton)    │                                     │
+│         └─────────────────┘                                     │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-### 📁 Project Structure
+### 🔄 Data Flow
 
 ```
-com.nammashale.assetmanager/
-│
-├── MainActivity.kt                  # Entry point with bottom navigation bar
-├── NammaShaaleApp.kt                # Application class (database & repository singletons)
-│
-├── data/
-│   ├── model/
-│   │   ├── Asset.kt                 # Asset entity (Room table: assets)
-│   │   └── Issue.kt                 # Issue entity (Room table: issues, FK → assets)
-│   ├── dao/
-│   │   ├── AssetDao.kt              # Data Access Object for assets
-│   │   └── IssueDao.kt              # Data Access Object for issues
-│   ├── database/
-│   │   └── AppDatabase.kt           # Room database singleton (v1)
-│   └── repository/
-│       └── AssetRepository.kt       # Single source of truth for all data operations
-│
-├── ui/
-│   ├── components/
-│   │   ├── AssetCard.kt             # Reusable asset card component
-│   │   └── ConditionChip.kt         # Color-coded condition badge (🟢🟡🔴)
-│   ├── navigation/
-│   │   └── NavGraph.kt              # Navigation routes & graph definition
-│   ├── screens/
-│   │   ├── DashboardScreen.kt       # Home dashboard with stats & quick actions
-│   │   ├── AssetRegistrationScreen.kt # Asset registration form
-│   │   ├── AssetListScreen.kt       # Searchable & filterable asset list
-│   │   ├── AssetDetailScreen.kt     # Detailed asset view with issue management
-│   │   ├── CameraScreen.kt          # CameraX photo capture screen
-│   │   ├── IssueListScreen.kt       # All issues with tab filtering
-│   │   └── ReportScreen.kt          # Generated text report with share option
-│   ├── theme/
-│   │   ├── Color.kt                 # Custom color palette (light & dark)
-│   │   ├── Theme.kt                 # Material 3 theme with dynamic color support
-│   │   └── Type.kt                  # Custom typography scale
-│   └── viewmodel/
-│       ├── AssetViewModel.kt        # Business logic for asset operations
-│       └── IssueViewModel.kt        # Business logic for issue operations
-│
-└── util/
-    └── ReportGenerator.kt           # Plain-text report builder utility
+User Action ──► Compose UI ──► ViewModel ──► Repository ──► DAO ──► Room (SQLite)
+                   ▲                                                     │
+                   │              Flow auto-emits on DB change           │
+                   └─────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 📂 Project Structure
+
+```
+📦 namma-shaale/
+├── 📄 build.gradle.kts                    # Root build config
+├── 📄 settings.gradle.kts                 # Project settings (name: NammaShaale)
+├── 📄 gradle.properties                   # Gradle JVM & AndroidX settings
+├── 📄 .gitignore                          # Git exclusions
+│
+├── 📁 gradle/
+│   ├── 📄 libs.versions.toml             # 📌 Version Catalog (centralized deps)
+│   └── 📁 wrapper/
+│       └── 📄 gradle-wrapper.properties   # Gradle wrapper config
+│
+└── 📁 app/
+    ├── 📄 build.gradle.kts                # App-level build config (SDK, deps)
+    ├── 📄 proguard-rules.pro              # ProGuard/R8 rules
+    │
+    └── 📁 src/main/
+        ├── 📄 AndroidManifest.xml         # App manifest (permissions, activities)
+        │
+        ├── 📁 res/
+        │   ├── 📁 drawable/               # Vector launcher icon assets
+        │   ├── 📁 mipmap-anydpi-v26/      # Adaptive icon config
+        │   └── 📁 values/
+        │       ├── 📄 strings.xml         # App name string resource
+        │       └── 📄 themes.xml          # Base XML theme (NoActionBar)
+        │
+        └── 📁 java/com/nammashale/assetmanager/
+            │
+            ├── 📄 MainActivity.kt              # 🚀 Entry point + Bottom navigation
+            ├── 📄 NammaShaaleApp.kt             # 📱 Application class (singletons)
+            │
+            ├── 📁 data/                         # ━━━ DATA LAYER ━━━
+            │   ├── 📁 model/
+            │   │   ├── 📄 Asset.kt              #   Room entity: assets table
+            │   │   └── 📄 Issue.kt              #   Room entity: issues table (FK→assets)
+            │   ├── 📁 dao/
+            │   │   ├── 📄 AssetDao.kt           #   CRUD + search/filter queries
+            │   │   └── 📄 IssueDao.kt           #   CRUD + unresolved queries
+            │   ├── 📁 database/
+            │   │   └── 📄 AppDatabase.kt        #   Room DB singleton (v1)
+            │   └── 📁 repository/
+            │       └── 📄 AssetRepository.kt    #   Single source of truth
+            │
+            ├── 📁 ui/                           # ━━━ PRESENTATION LAYER ━━━
+            │   ├── 📁 components/
+            │   │   ├── 📄 AssetCard.kt          #   Reusable asset list card
+            │   │   └── 📄 ConditionChip.kt      #   Color-coded status badge
+            │   ├── 📁 navigation/
+            │   │   └── 📄 NavGraph.kt           #   Routes + NavHost setup
+            │   ├── 📁 screens/
+            │   │   ├── 📄 DashboardScreen.kt    #   📊 Home dashboard
+            │   │   ├── 📄 AssetRegistrationScreen.kt  #   📝 Register new asset
+            │   │   ├── 📄 AssetListScreen.kt    #   📋 Browse & search assets
+            │   │   ├── 📄 AssetDetailScreen.kt  #   🔍 View & manage asset
+            │   │   ├── 📄 CameraScreen.kt       #   📸 CameraX capture
+            │   │   ├── 📄 IssueListScreen.kt    #   🐛 Issue tracker
+            │   │   └── 📄 ReportScreen.kt       #   📄 Generated reports
+            │   ├── 📁 theme/
+            │   │   ├── 📄 Color.kt              #   🎨 Light + Dark palettes
+            │   │   ├── 📄 Theme.kt              #   Material 3 + Dynamic colors
+            │   │   └── 📄 Type.kt               #   Custom typography scale
+            │   └── 📁 viewmodel/
+            │       ├── 📄 AssetViewModel.kt     #   Asset business logic
+            │       └── 📄 IssueViewModel.kt     #   Issue business logic
+            │
+            └── 📁 util/                         # ━━━ UTILITIES ━━━
+                └── 📄 ReportGenerator.kt        #   Plain-text report builder
+```
+
+> **Total: 30 source files** across data, UI, and utility layers.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology |
+<table>
+<tr>
+<td>
+
+### 🔤 Language & Build
+| Component | Technology |
 |---|---|
-| **Language** | Kotlin |
-| **UI Framework** | Jetpack Compose (Material 3) |
-| **Architecture** | MVVM + Repository Pattern |
-| **Local Database** | Room (SQLite) |
-| **Async** | Kotlin Coroutines + Flow |
-| **Navigation** | Jetpack Navigation Compose |
-| **Camera** | CameraX |
-| **Build System** | Gradle (Kotlin DSL) with Version Catalog |
-| **Annotation Processing** | KSP (Kotlin Symbol Processing) |
-| **Min SDK** | 26 (Android 8.0 Oreo) |
-| **Target SDK** | 35 (Android 15) |
-| **Java Compatibility** | JDK 17 |
+| Language | **Kotlin 2.1.0** |
+| Build System | **Gradle 8.7.3** (Kotlin DSL) |
+| Dependency Mgmt | **Version Catalog** (`libs.versions.toml`) |
+| Annotation Proc. | **KSP 2.1.0-1.0.29** |
+| Java Target | **JDK 17** |
 
----
+</td>
+<td>
 
-## 📦 Dependencies
+### 📱 Android & UI
+| Component | Technology |
+|---|---|
+| Min SDK | **26** (Android 8.0 Oreo) |
+| Target SDK | **35** (Android 15) |
+| UI Framework | **Jetpack Compose** |
+| Design System | **Material 3** (Material You) |
+| Icons | **Material Icons Extended** |
 
-```kotlin
-// Core
-androidx.core:core-ktx
+</td>
+</tr>
+<tr>
+<td>
 
-// Lifecycle & ViewModel
-androidx.lifecycle:lifecycle-runtime-ktx
-androidx.lifecycle:lifecycle-viewmodel-compose
-androidx.lifecycle:lifecycle-runtime-compose
+### 💾 Data & Storage
+| Component | Technology |
+|---|---|
+| Local Database | **Room 2.6.1** (SQLite) |
+| Async | **Kotlin Coroutines 1.9.0** |
+| Reactive Streams | **Kotlin Flow** |
+| State Management | **StateFlow + SharedFlow** |
 
-// Jetpack Compose (BOM-managed)
-androidx.activity:activity-compose
-androidx.compose.ui:ui
-androidx.compose.ui:ui-graphics
-androidx.compose.ui:ui-tooling-preview
-androidx.compose.material3:material3
-androidx.compose.material:material-icons-extended
+</td>
+<td>
 
-// Navigation
-androidx.navigation:navigation-compose
+### 🧭 Navigation & Camera
+| Component | Technology |
+|---|---|
+| Navigation | **Navigation Compose 2.8.5** |
+| Camera | **CameraX 1.4.1** |
+| Lifecycle | **Lifecycle Runtime 2.8.7** |
+| Activity | **Activity Compose 1.9.3** |
 
-// Room Database
-androidx.room:room-runtime
-androidx.room:room-ktx
-androidx.room:room-compiler (KSP)
-
-// CameraX
-androidx.camera:camera-core
-androidx.camera:camera-camera2
-androidx.camera:camera-lifecycle
-androidx.camera:camera-view
-
-// Coroutines
-org.jetbrains.kotlinx:kotlinx-coroutines-android
-```
+</td>
+</tr>
+</table>
 
 ---
 
@@ -146,62 +280,82 @@ org.jetbrains.kotlinx:kotlinx-coroutines-android
 
 ### Prerequisites
 
-- **Android Studio** Hedgehog (2023.1.1) or newer
-- **JDK 17** or higher
-- An Android device or emulator running **API 26+**
-
-### Setup
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/sibareddy130404/Namma-Shaale-Mindmatrix-.git
-   ```
-
-2. **Open in Android Studio:**
-   - Launch Android Studio
-   - Select **File → Open** and navigate to the cloned directory
-
-3. **Sync Gradle:**
-   - Android Studio will prompt you to sync Gradle — click **Sync Now**
-
-4. **Run the app:**
-   - Connect a physical device or start an emulator
-   - Click the **▶ Run** button or press `Shift + F10`
-
-### Permissions
-
-The app requests the following permission at runtime:
-
-| Permission | Purpose |
+| Requirement | Version |
 |---|---|
-| `CAMERA` | Capturing photos of assets during registration |
+| Android Studio | **Hedgehog (2023.1.1)** or newer |
+| JDK | **17** or higher |
+| Android Device/Emulator | **API 26+** (Android 8.0 Oreo) |
+| Gradle | Wrapper included (no separate install needed) |
 
-> **Note:** Camera hardware is declared as `required="false"`, so the app installs on devices without a camera — the photo feature will simply be unavailable.
+### 📥 Installation
+
+```bash
+# 1️⃣ Clone the repository
+git clone https://github.com/sibareddy130404/Namma-Shaale-Mindmatrix-.git
+
+# 2️⃣ Navigate into the project
+cd Namma-Shaale-Mindmatrix-
+```
+
+### ▶️ Running the App
+
+1. **Open** the project in Android Studio
+2. Wait for **Gradle Sync** to complete (automatic on first open)
+3. Connect a **physical device** or start an **emulator** (API 26+)
+4. Click **▶ Run** (or press `Shift + F10`)
+
+### 🔐 Permissions
+
+| Permission | Required | Purpose |
+|---|:---:|---|
+| `CAMERA` | Runtime | Capturing photos of assets during registration |
+
+> 📝 **Note:** Camera hardware is declared as `android:required="false"` in the manifest. The app installs on devices without cameras — the photo capture feature will simply be unavailable.
 
 ---
 
-## 📱 Screens Overview
+## 📊 Database Schema
 
-### 1. Dashboard
-The home screen displays animated stat cards with gradient backgrounds showing asset counts by condition. Quick-action buttons provide one-tap navigation to asset list, issues, and reports.
+The app uses **Room** (SQLite) with 2 tables linked by a foreign key:
 
-### 2. Asset Registration
-A scrollable form with validated text fields for asset name and serial number, dropdown menus for category (Furniture, Electronics, Sports Equipment, Books, Lab Equipment, Others) and condition (Working, Needs Repair, Broken), plus a tap-to-capture photo card.
+```
+┌─────────────────────────────────┐       ┌─────────────────────────────────┐
+│          📦 assets              │       │          🐛 issues              │
+├─────────────────────────────────┤       ├─────────────────────────────────┤
+│ 🔑 id         LONG   (PK,auto) │──┐    │ 🔑 id          LONG  (PK,auto) │
+│    name       STRING            │  │    │ 🔗 assetId     LONG  (FK)──────│──┘
+│    serialNo   STRING            │  │    │    description  STRING          │
+│    category   STRING            │  └───►│    date         LONG            │
+│    condition  STRING            │       │    resolved     BOOLEAN         │
+│    photoPath  STRING?           │       └─────────────────────────────────┘
+│    createdAt  LONG              │
+│    updatedAt  LONG              │        CASCADE DELETE: When an asset is
+└─────────────────────────────────┘        deleted, all its issues are auto-
+                                           matically removed.
+```
 
-### 3. Asset List
-A `LazyColumn` of all assets with live search and `FilterChip` condition filters. Each item shows the asset avatar (2-letter initials), name, serial number, category, and a color-coded condition badge.
+### Asset Fields
 
-### 4. Asset Detail
-Full asset information with header card, editable condition (via dropdown), registration/update timestamps, and a linked issues list. Includes delete (with confirmation dialog) and "Log Issue" FAB.
+| Column | Type | Default | Description |
+|---|---|---|---|
+| `id` | `Long` | Auto-generated | Primary key |
+| `name` | `String` | — | Display name (e.g., "Wooden Chair", "Projector") |
+| `serialNo` | `String` | — | Unique serial/inventory number |
+| `category` | `String` | — | One of: Furniture, Electronics, Sports Equipment, Books, Lab Equipment, Others |
+| `condition` | `String` | `"Working"` | One of: Working, Needs Repair, Broken |
+| `photoPath` | `String?` | `null` | File path to captured photo |
+| `createdAt` | `Long` | `System.currentTimeMillis()` | Registration timestamp (epoch ms) |
+| `updatedAt` | `Long` | `System.currentTimeMillis()` | Last update timestamp (epoch ms) |
 
-### 5. Issue Tracker
-Tabbed view (All · Open · Resolved) of all reported issues with resolve and delete actions. Issues are color-coded — open issues appear in error container colors, resolved in surface variants.
+### Issue Fields
 
-### 6. Camera
-Full-screen CameraX viewfinder with a styled circular capture button. The captured photo URI is passed back to the registration screen via `SavedStateHandle`.
-
-### 7. Reports
-An auto-generated monospaced text report summarizing total assets, condition breakdown, category distribution, and recent unresolved issues. Shareable via Android's `ACTION_SEND` intent.
+| Column | Type | Default | Description |
+|---|---|---|---|
+| `id` | `Long` | Auto-generated | Primary key |
+| `assetId` | `Long` | — | Foreign key → `assets.id` (cascade delete) |
+| `description` | `String` | — | Issue description text |
+| `date` | `Long` | `System.currentTimeMillis()` | Report date (epoch ms) |
+| `resolved` | `Boolean` | `false` | Resolution status |
 
 ---
 
@@ -209,73 +363,263 @@ An auto-generated monospaced text report summarizing total assets, condition bre
 
 ### Color Palette
 
-| Role | Light | Dark |
-|---|---|---|
-| **Primary** | Deep Teal `#006B5E` | `#5CDBC6` |
-| **Secondary** | Warm Amber `#8B5E00` | `#FFB E48` |
-| **Tertiary** | Soft Purple `#6750A4` | `#CFBCFF` |
-| **Working** | Green `#2E7D32` | — |
-| **Needs Repair** | Amber `#F9A825` | — |
-| **Broken** | Red `#C62828` | — |
+<table>
+<tr>
+<td>
 
-### Dynamic Colors
-On Android 12+ devices, the app uses **Material You** dynamic colors derived from the user's wallpaper. On older devices, the custom teal/amber palette is applied.
+#### ☀️ Light Theme
+| Role | Color | Hex |
+|---|---|---|
+| Primary | 🟢 Deep Teal | `#006B5E` |
+| Primary Container | 🟩 Mint | `#7AF8E2` |
+| Secondary | 🟠 Warm Amber | `#8B5E00` |
+| Secondary Container | 🟨 Gold | `#FFDEA6` |
+| Tertiary | 🟣 Soft Purple | `#6750A4` |
+| Background | ⬜ Cool Mint | `#F5FBF8` |
+
+</td>
+<td>
+
+#### 🌙 Dark Theme
+| Role | Color | Hex |
+|---|---|---|
+| Primary | 🟢 Light Teal | `#5CDBC6` |
+| Primary Container | 🟢 Dark Teal | `#005046` |
+| Secondary | 🟡 Bright Amber | `#FFBE48` |
+| Secondary Container | 🟤 Deep Gold | `#694600` |
+| Tertiary | 🟣 Lavender | `#CFBCFF` |
+| Background | ⬛ Deep Green-Black | `#0F1513` |
+
+</td>
+</tr>
+</table>
+
+### Condition Status Colors
+
+| Condition | Color | Hex | Usage |
+|---|---|---|---|
+| ✅ Working | 🟢 Green | `#2E7D32` | Badges, chips, stat cards |
+| ⚠️ Needs Repair | 🟡 Amber | `#F9A825` | Badges, chips, stat cards |
+| ❌ Broken | 🔴 Red | `#C62828` | Badges, chips, stat cards |
+
+### 🪄 Dynamic Colors (Material You)
+
+On **Android 12+** devices, the app automatically adapts to the user's wallpaper colors using `dynamicLightColorScheme()` / `dynamicDarkColorScheme()`. On older devices, the custom Deep Teal palette is applied.
+
+### Typography
+
+The app uses a custom **Material 3 type scale** built on `FontFamily.SansSerif` with carefully tuned:
+- Font sizes from `11sp` (labelSmall) to `57sp` (displayLarge)
+- Line heights for optimal readability
+- Letter spacing adjustments per text role
 
 ---
 
-## 📊 Data Model
+## 📋 Version Catalog
 
-### Asset Table (`assets`)
+All dependency versions are centralized in [`gradle/libs.versions.toml`](gradle/libs.versions.toml):
 
-| Column | Type | Description |
+```toml
+[versions]
+agp             = "8.7.3"
+kotlin          = "2.1.0"
+ksp             = "2.1.0-1.0.29"
+coreKtx         = "1.15.0"
+lifecycleRuntimeKtx = "2.8.7"
+activityCompose = "1.9.3"
+composeBom      = "2024.12.01"
+navigationCompose = "2.8.5"
+room            = "2.6.1"
+camerax         = "1.4.1"
+coroutines      = "1.9.0"
+```
+
+---
+
+## 🧭 Navigation Map
+
+```
+                    ┌─────────────────┐
+                    │    Dashboard    │ ◄── Start Destination
+                    │   (Home Page)   │
+                    └──────┬──────────┘
+                           │
+            ┌──────────────┼──────────────┐
+            ▼              ▼              ▼
+   ┌────────────────┐ ┌──────────┐ ┌───────────┐
+   │Asset Registration│ │Asset List│ │Issue List │
+   └───────┬────────┘ └────┬─────┘ └───────────┘
+           │               │
+           ▼               ▼
+     ┌──────────┐   ┌──────────────┐
+     │  Camera  │   │ Asset Detail  │
+     └──────────┘   └──────────────┘
+
+     ╔══════════════════════════════╗
+     ║  Bottom Navigation Bar      ║
+     ║  Dashboard │ Register │     ║
+     ║  Assets   │ Issues          ║
+     ╚══════════════════════════════╝
+```
+
+| Route | Path | Arguments |
 |---|---|---|
-| `id` | `Long` (PK, auto) | Unique identifier |
-| `name` | `String` | Asset display name |
-| `serialNo` | `String` | Unique serial/inventory number |
-| `category` | `String` | Asset category |
-| `condition` | `String` | Working / Needs Repair / Broken |
-| `photoPath` | `String?` | File path to captured photo |
-| `createdAt` | `Long` | Registration timestamp (epoch ms) |
-| `updatedAt` | `Long` | Last update timestamp (epoch ms) |
+| Dashboard | `dashboard` | — |
+| Asset Registration | `asset_registration` | `photoUri` (SavedStateHandle) |
+| Asset List | `asset_list` | — |
+| Asset Detail | `asset_detail/{assetId}` | `assetId: Long` |
+| Issue List | `issue_list` | — |
+| Camera | `camera` | — |
+| Report | `report` | — |
 
-### Issue Table (`issues`)
+---
 
-| Column | Type | Description |
-|---|---|---|
-| `id` | `Long` (PK, auto) | Unique identifier |
-| `assetId` | `Long` (FK → assets) | Linked asset |
-| `description` | `String` | Issue description |
-| `date` | `Long` | Report date (epoch ms) |
-| `resolved` | `Boolean` | Resolution status |
+## 🔑 Key Implementation Details
 
-> Issues cascade-delete when their parent asset is removed.
+<details>
+<summary><b>💾 Singleton Database Pattern</b></summary>
+
+The database uses `@Volatile` + `synchronized` to ensure thread-safe singleton creation:
+
+```kotlin
+companion object {
+    @Volatile
+    private var INSTANCE: AppDatabase? = null
+
+    fun getDatabase(context: Context): AppDatabase {
+        return INSTANCE ?: synchronized(this) {
+            Room.databaseBuilder(
+                context.applicationContext,
+                AppDatabase::class.java,
+                "namma_shaale_database"
+            ).fallbackToDestructiveMigration().build()
+                .also { INSTANCE = it }
+        }
+    }
+}
+```
+</details>
+
+<details>
+<summary><b>🔄 Reactive UI with StateFlow</b></summary>
+
+ViewModels convert Room's `Flow` into `StateFlow` for Compose consumption:
+
+```kotlin
+val allAssets: StateFlow<List<Asset>> = repository.allAssets
+    .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+```
+
+The `WhileSubscribed(5000)` strategy keeps the flow active for 5 seconds after the last subscriber leaves, preventing unnecessary restarts during configuration changes.
+</details>
+
+<details>
+<summary><b>🔍 Combined Search + Filter</b></summary>
+
+Search and filter are implemented using `combine` on three flows:
+
+```kotlin
+val filteredAssets: StateFlow<List<Asset>> = combine(
+    allAssets, _searchQuery, _selectedFilter
+) { assets, query, filter ->
+    var result = assets
+    if (query.isNotBlank()) {
+        result = result.filter {
+            it.name.contains(query, ignoreCase = true) ||
+            it.serialNo.contains(query, ignoreCase = true)
+        }
+    }
+    if (filter != "All") {
+        result = result.filter { it.condition == filter }
+    }
+    result
+}.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+```
+</details>
+
+<details>
+<summary><b>📸 CameraX Photo Capture</b></summary>
+
+Photos are captured using CameraX's `ImageCapture` use case and saved to external storage:
+
+```kotlin
+val photoFile = File(
+    context.getExternalFilesDir(null),
+    SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.US)
+        .format(System.currentTimeMillis()) + ".jpg"
+)
+imageCapture.takePicture(
+    ImageCapture.OutputFileOptions.Builder(photoFile).build(),
+    executor,
+    object : ImageCapture.OnImageSavedCallback { /* ... */ }
+)
+```
+
+The captured URI is passed back via Navigation's `SavedStateHandle`.
+</details>
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Here's how to get started:
+We welcome contributions! Here's how to get started:
 
-1. **Fork** the repository
-2. Create a **feature branch** (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. Open a **Pull Request**
+```bash
+# 1. Fork the repo on GitHub
+
+# 2. Clone your fork
+git clone https://github.com/<your-username>/Namma-Shaale-Mindmatrix-.git
+
+# 3. Create a feature branch
+git checkout -b feature/amazing-feature
+
+# 4. Make your changes and commit
+git commit -m "feat: add amazing feature"
+
+# 5. Push to your fork
+git push origin feature/amazing-feature
+
+# 6. Open a Pull Request on GitHub
+```
+
+### 💡 Ideas for Contribution
+
+- [ ] Add image loading with **Coil** for asset photos
+- [ ] Implement **barcode/QR code scanning** for serial numbers
+- [ ] Add **export to CSV/PDF** functionality
+- [ ] Implement **cloud sync** with Firebase
+- [ ] Add **multi-language support** (Kannada, Hindi, etc.)
+- [ ] Write **unit tests** for ViewModels and Repository
+- [ ] Add **UI tests** with Compose Testing
 
 ---
 
-## 👥 Team — MindMatrix
+## 👥 Team
 
-This project was developed by **Team MindMatrix** as part of the **Namma Shaale** initiative.
+<div align="center">
+
+### 🧠 Team MindMatrix
+
+*Developed as part of the **Namma Shaale** initiative — empowering schools with modern technology for asset management.*
+
+</div>
 
 ---
 
 ## 📄 License
 
-This project is open source and available for educational purposes.
+This project is **open source** and available for educational purposes.
 
 ---
 
-<p align="center">
-  Made with ❤️ by <strong>Team MindMatrix</strong>
-</p>
+<div align="center">
+
+---
+
+**⭐ If this project helped you, consider giving it a star!**
+
+Made with ❤️ by **Team MindMatrix** using **Kotlin** & **Jetpack Compose**
+
+[![GitHub](https://img.shields.io/badge/View_on-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sibareddy130404/Namma-Shaale-Mindmatrix-)
+
+</div>
